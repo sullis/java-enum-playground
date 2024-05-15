@@ -19,7 +19,7 @@ java {
 
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
-        vendor.set(JvmVendorSpec.AZUL)
+        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 }
 
