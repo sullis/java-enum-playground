@@ -7,7 +7,6 @@ permissions:
   contents: read
 
 env:
-  JDK: '21'
   DISTRIBUTION: 'temurin'
   GRADLE_COMMAND: './gradlew --no-daemon'
 
@@ -18,10 +17,10 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK ${{ env.JDK }}
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ env.JDK }}
+          java-version: 8
           distribution: ${{ env.DISTRIBUTION }}
       - id: set-matrix
         run: echo "::set-output name=matrix::`./gradlew -q benchmarkJson`"
@@ -30,14 +29,15 @@ jobs:
     needs: setup
     strategy:
       matrix:
+        jdk: [ 8, 21 ]
         microbenchmark: ${{fromJSON(needs.setup.outputs.matrix)}}
-    name:  ${{ matrix.microbenchmark }}
+    name:  ${{ matrix.microbenchmark }} ${{ matrix.jdk }}
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK ${{ env.JDK }}
+      - name: Set up JDK ${{ matrix.jdk }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ env.JDK }}
+          java-version: ${{ matrix.jdk }}
           distribution: ${{ env.DISTRIBUTION }}
       - name: JMH
         run: ${{ env.GRADLE_COMMAND }} clean jmh -Dbenchmark=${{ matrix.microbenchmark }}
