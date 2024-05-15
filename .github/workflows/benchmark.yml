@@ -29,9 +29,9 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        jdk: [ 8, 21 ]
+        jdk: [ 8, 11, 17, 21 ]
         microbenchmark: ${{fromJSON(needs.setup.outputs.benchmarks)}}
-    name:  ${{ matrix.microbenchmark }} ${{ matrix.jdk }}
+    name:  ${{ matrix.microbenchmark }} Java${{ matrix.jdk }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.jdk }}
