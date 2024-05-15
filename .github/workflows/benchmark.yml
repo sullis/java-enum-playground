@@ -8,7 +8,7 @@ permissions:
 
 env:
   JDK: '21'
-  DISTRIBUTION: 'zulu'
+  DISTRIBUTION: 'temurin'
   GRADLE_COMMAND: './gradlew --no-daemon'
 
 jobs:
