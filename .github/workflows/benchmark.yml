@@ -1,0 +1,43 @@
+name: benchmark
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  JDK: '21'
+  DISTRIBUTION: 'zulu'
+  GRADLE_COMMAND: './gradlew --no-daemon'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ env.JDK }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JDK }}
+          distribution: ${{ env.DISTRIBUTION }}
+      - id: set-matrix
+        run: echo "::set-output name=matrix::`./gradlew -q benchmarkJson`"
+  benchmark:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        microbenchmark: ${{fromJSON(needs.setup.outputs.matrix)}}
+    name:  ${{ matrix.microbenchmark }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ env.JDK }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JDK }}
+          distribution: ${{ env.DISTRIBUTION }}
+      - name: JMH
+        run: ${{ env.GRADLE_COMMAND }} clean jmh -Dbenchmark=${{ matrix.microbenchmark }}

@@ -1,27 +1,32 @@
 name: CI
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '*.md'
+
+permissions:
+  contents: read
+
+env:
+  JDK: '21'
+  DISTRIBUTION: 'zulu'
+  GRADLE_COMMAND: './gradlew --no-daemon'
 
 jobs:
   build:
-    strategy:
-      matrix:
-        java: [ '21' ]
-        os: [ 'ubuntu-latest' ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        java-version: ${{ matrix.java }}
-        distribution: 'temurin'
-        cache: 'maven'
-    - name: Build
-      run: mvn -ntp -B clean test
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ env.JDK }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JDK }}
+          distribution: ${{ env.DISTRIBUTION }}
+      - name: jmhJar
+        run: ${{ env.GRADLE_COMMAND }} clean jmhJar
