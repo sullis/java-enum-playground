@@ -14,7 +14,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      benchmarks: ${{ steps.set-benchmarks.outputs.benchmarks }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
@@ -23,7 +23,7 @@ jobs:
           java-version: 8
           distribution: ${{ env.DISTRIBUTION }}
       - id: set-benchmarks
-        run: echo "::set-output name=benchmarks::`./gradlew -q benchmarkJson`"
+        run: echo "benchmarks=`./gradlew -q benchmarkJson`" >> $GITHUB_OUTPUT
   benchmark:
     runs-on: ubuntu-latest
     needs: setup
