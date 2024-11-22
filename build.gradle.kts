@@ -41,7 +41,7 @@ jmh {
     profilers.set(listOf("gc"))
 }
 
-val log4jVersion = "2.24.1"
+val log4jVersion = "2.24.2"
 
 dependencies {
     jmh("org.apache.logging.log4j:log4j-core:$log4jVersion")
