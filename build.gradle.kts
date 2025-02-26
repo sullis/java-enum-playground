@@ -45,5 +45,5 @@ val log4jVersion = "2.24.3"
 
 dependencies {
     jmh("org.apache.logging.log4j:log4j-core:$log4jVersion")
-    jmh("org.slf4j:slf4j-api:2.0.16")
+    jmh("org.slf4j:slf4j-api:2.0.17")
 }
