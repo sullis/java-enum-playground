@@ -16,7 +16,7 @@ jobs:
     outputs:
       benchmarks: ${{ steps.set-benchmarks.outputs.benchmarks }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -33,7 +33,7 @@ jobs:
         microbenchmark: ${{fromJSON(needs.setup.outputs.benchmarks)}}
     name:  ${{ matrix.microbenchmark }} Java${{ matrix.jdk }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK ${{ matrix.jdk }}
         uses: actions/setup-java@v4
         with:
