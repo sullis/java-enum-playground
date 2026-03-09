@@ -34,11 +34,15 @@ val benchmarkName = providers.systemProperty("benchmark").getOrElse("")
 jmh {
     fork.set(2)
     includes.set(listOf(benchmarkName))
-    iterations.set(5)
-    warmupIterations.set(2)
+    warmupIterations.set(5)
+    warmup.set("1s")
+    iterations.set(10)
+    timeOnIteration.set("1s")
     failOnError.set(true)
     jmhVersion.set("1.37")
-    profilers.set(listOf("gc"))
+    profilers.set(listOf("gc", "stack"))
+    resultFormat.set("json")
+    resultsFile.set(layout.buildDirectory.file("jmh-results.json"))
 }
 
 val log4jVersion = "2.25.3"
