@@ -45,7 +45,7 @@ jmh {
     resultsFile.set(layout.buildDirectory.file("jmh-results.json"))
 }
 
-val log4jVersion = "2.25.3"
+val log4jVersion = "2.25.4"
 
 dependencies {
     jmh("org.apache.logging.log4j:log4j-core:$log4jVersion")
